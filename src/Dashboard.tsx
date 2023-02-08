@@ -19,7 +19,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
-import Orders from './Orders';
+import Jobs from './Jobs';
 
 function Copyright(props: any) {
   return (
@@ -190,10 +190,10 @@ function DashboardContent() {
                 >
                 </Paper> */}
               {/* </Grid> */}
-              {/* Recent Orders */}
+              {/* Recent Jobs */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
+                  <Jobs />
                 </Paper>
               </Grid>
             </Grid>
