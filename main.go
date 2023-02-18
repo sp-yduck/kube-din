@@ -24,6 +24,7 @@ func main() {
 	e.GET("/api/job", job)
 
 	// serve
+	// to do : use port number from env var
 	e.Logger.Fatal(e.Start(":1234"))
 }
 
