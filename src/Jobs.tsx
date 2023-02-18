@@ -8,21 +8,13 @@ import TableRow from '@mui/material/TableRow';
 import axios from "axios";
 import Title from './Title';
 
-// Generate Job Data
-function createData(
-  id: number,
-  time: string,
-  name: string,
-  nameSpace: string,
-  duration: string,
-  completions: string,
-) {
-  return { id, time, name, nameSpace, duration, completions };
+function preventDefault(event: React.MouseEvent) {
+  event.preventDefault();
 }
 
-const FetchJobs = () => {
+export default function Jobs() {
   const [jobs, setJobs] = React.useState([]);
-  
+
   React.useEffect(() => {
     const setResponse = async () => {
       // to do : use port number from env var
@@ -32,92 +24,36 @@ const FetchJobs = () => {
     };
     setResponse();
   }, []);
-  return (
-    <>
-    <p>job name will be listed here</p>
-    <p>{jobs.map((job: any) => (
-      <p>{job.metadata.name}</p>
-    ))}</p>
-    </>
-  )
-}
 
-const rows = [
-  createData(
-    0,
-    '16 Mar, 2019',
-    'job-a',
-    'default',
-    "9s",
-    "1/1",
-  ),
-  createData(
-    1,
-    '16 Mar, 2019',
-    'job-a',
-    'default',
-    "9s",
-    "1/1",
-  ),
-  createData(2,
-    '16 Mar, 2019',
-    'job-a',
-    'default',
-    "9s",
-    "1/1"
-  ),
-  createData(
-    3,
-    '16 Mar, 2019',
-    'job-a',
-    'default',
-    "9s",
-    "1/1",
-  ),
-  createData(
-    4,
-    '16 Mar, 2019',
-    'job-a',
-    'default',
-    "9s",
-    "1/1",
-  ),
-];
-
-function preventDefault(event: React.MouseEvent) {
-  event.preventDefault();
-}
-
-export default function Jobs() {
   return (
     <React.Fragment>
       <Title>Recent Jobs</Title>
-      <FetchJobs />
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Time</TableCell>
+            <TableCell>Creation Time</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>NameSpace</TableCell>
-            <TableCell>Duration</TableCell>
+            <TableCell>Succeeded</TableCell>
             <TableCell align="right">Completion</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.time}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.nameSpace}</TableCell>
-              <TableCell>{row.duration}</TableCell>
-              <TableCell align="right">{row.completions}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+          <TableBody>
+            {jobs.map((job: any) => (
+              <TableRow key={job.metadata.uid}>
+                <TableCell>{job.metadata.creationTimestamp}</TableCell>
+                <TableCell>{job.metadata.name}</TableCell>
+                <TableCell>{job.metadata.namespace}</TableCell>
+                <TableCell>{job.status.succeeded}</TableCell>
+                <TableCell align="right">{job.spec.completions}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
       </Table>
-      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
+      {/* WIP */}
+      {/* <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
         See more jobs
-      </Link>
+      </Link> */}
     </React.Fragment>
   );
 }
