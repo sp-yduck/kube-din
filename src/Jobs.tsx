@@ -5,6 +5,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import axios from "axios";
 import Title from './Title';
 
 // Generate Job Data
@@ -17,6 +18,28 @@ function createData(
   completions: string,
 ) {
   return { id, time, name, nameSpace, duration, completions };
+}
+
+const FetchJobs = () => {
+  const [jobs, setJobs] = React.useState([]);
+  
+  React.useEffect(() => {
+    const setResponse = async () => {
+      // to do : use port number from env var
+      const res = await axios.get("http://localhost:1234/api/job");
+      console.log(res)
+      setJobs(res.data.items)
+    };
+    setResponse();
+  }, []);
+  return (
+    <>
+    <p>job name will be listed here</p>
+    <p>{jobs.map((job: any) => (
+      <p>{job.metadata.name}</p>
+    ))}</p>
+    </>
+  )
 }
 
 const rows = [
@@ -69,6 +92,7 @@ export default function Jobs() {
   return (
     <React.Fragment>
       <Title>Recent Jobs</Title>
+      <FetchJobs />
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -86,7 +110,7 @@ export default function Jobs() {
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.nameSpace}</TableCell>
               <TableCell>{row.duration}</TableCell>
-              <TableCell align="right">{`$${row.completions}`}</TableCell>
+              <TableCell align="right">{row.completions}</TableCell>
             </TableRow>
           ))}
         </TableBody>
